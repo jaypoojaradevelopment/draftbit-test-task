@@ -1,5 +1,14 @@
 %raw(`require("./PropertiesPanel.css")`)
 
+
+/**
+ @ref: https://forum.rescript-lang.org/t/use-reactjs-components-in-rescript-react-project/1992/8
+ */
+module Prism = {
+  @react.component @module("./components/Prism")
+  external make: unit => React.element = "default"
+}
+
 module Collapsible = {
   @react.component
   let make = (~title, ~children) => {
@@ -59,7 +68,7 @@ let make = () =>
   <aside className="PropertiesPanel">
     <Collapsible title="Load examples"> <ViewExamples /> </Collapsible>
     <Collapsible title="Margins & Padding">
-      <span> {React.string("TODO: build me!")} </span>
+      <Prism />
     </Collapsible>
     <Collapsible title="Size"> <span> {React.string("example")} </span> </Collapsible>
   </aside>
