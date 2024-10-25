@@ -32,9 +32,7 @@ const DisplayText = ({
   ];
 
   const wrapperRef = React.useRef<HTMLDivElement>(null);
-  const [currentValue, setCurrentValue] = React.useState<number | undefined>(
-    value
-  );
+  const [currentValue, setCurrentValue] = React.useState<number>(0);
 
   const clickEventHandler = React.useCallback(() => {
     if (isDefault || isChanged) {
@@ -57,6 +55,11 @@ const DisplayText = ({
 
   // Attach the click outside listener to the modal
   useClickOutside(wrapperRef, () => onClick(undefined));
+
+  // to check we are getting data else we should not display
+  if (!id) {
+    return null;
+  }
 
   return (
     <div

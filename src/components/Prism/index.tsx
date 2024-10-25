@@ -1,69 +1,50 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
+import useFetch from "../../hooks/useFetch";
 import DisplayText from "./DisplayText";
+import Loading from "../Loading";
+import { Spacing } from "./type";
+
 import "./Prism.css";
-import { Position, Spacing } from "./type";
 
-type PrismProps = {
-  spacingData: Spacing[];
-};
-const Prism = ({ spacingData = [] }: PrismProps) => {
-  // TODO: need to get this below data from api
-  spacingData = [
-    {
-      id: "1",
-      position: Position.top,
-      type: "margin",
-    },
-    {
-      id: "2",
-      position: Position.left,
-      value: 24,
-      unit: "px",
-      type: "margin",
-    },
-    {
-      id: "3",
-      position: Position.right,
-      value: 24,
-      unit: "px",
-      type: "margin",
-    },
-    {
-      id: "4",
-      position: Position.bottom,
-      type: "margin",
-    },
-
-    {
-      id: "5",
-      position: Position.top,
-      type: "padding",
-    },
-    {
-      id: "6",
-      position: Position.left,
-      type: "padding",
-    },
-    {
-      id: "7",
-      position: Position.right,
-      value: 24,
-      unit: "px",
-      type: "padding",
-    },
-    {
-      id: "8",
-      position: Position.bottom,
-      type: "padding",
-    },
-  ];
-  const [mt, ml, mr, mb] = spacingData.filter((i) => i.type === "margin");
-  const [pt, pl, pr, pb] = spacingData.filter((i) => i.type === "padding");
-
+const Prism = () => {
+  const [spacingData, setSpacingData] = React.useState<Spacing[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [focusItem, setFocusItem] = React.useState<string | undefined>();
 
-  const submitHandler = (data: Spacing) => {
-    console.log("data", data);
+  const [mt, ml, mr, mb] = useMemo(
+    () => spacingData.filter((i) => i.type === "margin"),
+    [spacingData]
+  );
+  const [pt, pl, pr, pb] = useMemo(
+    () => spacingData.filter((i) => i.type === "padding"),
+    [spacingData]
+  );
+
+  const {
+    loading: isSpacingDataPending,
+    error,
+    data,
+  } = useFetch<Spacing[]>(`http://localhost:12346/spacing`);
+
+  useEffect(() => {
+    setSpacingData(data || []);
+  }, [data]);
+
+  const submitHandler = async (data: Spacing) => {
+    setLoading(true);
+    const newData = spacingData.map((item) => {
+      if (data.id === item.id) {
+        return data;
+      }
+      return item;
+    });
+
+    // TODO: need to submit below data to api
+    setTimeout(() => {
+      setLoading(false);
+      setSpacingData(newData);
+      setFocusItem(undefined);
+    }, 1000);
   };
 
   const changeFocusItemHandler = (id?: string) => {
@@ -77,17 +58,19 @@ const Prism = ({ spacingData = [] }: PrismProps) => {
 
   return (
     <div className="Prism">
+      {loading || isSpacingDataPending ? <Loading /> : null}
+      {error ? <div>Error: Something went wrong while getting data</div> : null}
       <div className="Prism-row">
         <DisplayText
           {...mt}
-          isFocused={mt.id === focusItem}
+          isFocused={mt?.id === focusItem}
           onClick={changeFocusItemHandler}
           onSubmit={submitHandler}
         />
         <div className="Prism-flex-vertical">
           <DisplayText
             {...ml}
-            isFocused={ml.id === focusItem}
+            isFocused={ml?.id === focusItem}
             onClick={changeFocusItemHandler}
             onSubmit={submitHandler}
           />
@@ -95,27 +78,27 @@ const Prism = ({ spacingData = [] }: PrismProps) => {
             <div className="Prism-row">
               <DisplayText
                 {...pt}
-                isFocused={pt.id === focusItem}
+                isFocused={pt?.id === focusItem}
                 onClick={changeFocusItemHandler}
                 onSubmit={submitHandler}
               />
               <div className="Prism-flex-vertical">
                 <DisplayText
                   {...pl}
-                  isFocused={pl.id === focusItem}
+                  isFocused={pl?.id === focusItem}
                   onClick={changeFocusItemHandler}
                   onSubmit={submitHandler}
                 />
                 <DisplayText
                   {...pr}
-                  isFocused={pr.id === focusItem}
+                  isFocused={pr?.id === focusItem}
                   onClick={changeFocusItemHandler}
                   onSubmit={submitHandler}
                 />
               </div>
               <DisplayText
                 {...pb}
-                isFocused={pb.id === focusItem}
+                isFocused={pb?.id === focusItem}
                 onClick={changeFocusItemHandler}
                 onSubmit={submitHandler}
               />
@@ -123,14 +106,14 @@ const Prism = ({ spacingData = [] }: PrismProps) => {
           </div>
           <DisplayText
             {...mr}
-            isFocused={mr.id === focusItem}
+            isFocused={mr?.id === focusItem}
             onClick={changeFocusItemHandler}
             onSubmit={submitHandler}
           />
         </div>
         <DisplayText
           {...mb}
-          isFocused={mb.id === focusItem}
+          isFocused={mb?.id === focusItem}
           onClick={changeFocusItemHandler}
           onSubmit={submitHandler}
         />
