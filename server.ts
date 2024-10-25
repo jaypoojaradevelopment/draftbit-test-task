@@ -6,6 +6,23 @@ import waitOn from "wait-on";
 import onExit from "signal-exit";
 import cors from "cors";
 
+enum Position {
+  top = "top",
+  bottom = "bottom",
+  left = "left",
+  right = "right",
+}
+
+type SpacingType = "margin" | "padding";
+
+type Spacing = {
+  position: Position;
+  value?: number;
+  unit?: string;
+  id: string;
+  type: SpacingType;
+};
+
 // Add your routes here
 const setupApp = (client: Client): express.Application => {
   const app: express.Application = express();
@@ -17,6 +34,59 @@ const setupApp = (client: Client): express.Application => {
   app.get("/examples", async (_req, res) => {
     const { rows } = await client.query(`SELECT * FROM example_table`);
     res.json(rows);
+  });
+
+  app.get("/spacing", async (_req, res) => {
+    const spacingData: Spacing[] = [
+      {
+        id: "1",
+        position: Position.top,
+        type: "margin",
+      },
+      {
+        id: "2",
+        position: Position.left,
+        value: 24,
+        unit: "px",
+        type: "margin",
+      },
+      {
+        id: "3",
+        position: Position.right,
+        value: 24,
+        unit: "px",
+        type: "margin",
+      },
+      {
+        id: "4",
+        position: Position.bottom,
+        type: "margin",
+      },
+
+      {
+        id: "5",
+        position: Position.top,
+        type: "padding",
+      },
+      {
+        id: "6",
+        position: Position.left,
+        type: "padding",
+      },
+      {
+        id: "7",
+        position: Position.right,
+        value: 24,
+        unit: "px",
+        type: "padding",
+      },
+      {
+        id: "8",
+        position: Position.bottom,
+        type: "padding",
+      },
+    ];
+    res.json(spacingData);
   });
 
   return app;
@@ -45,7 +115,7 @@ const connect = async (): Promise<Client> => {
 const main = async () => {
   const client = await connect();
   const app = setupApp(client);
-  const port = parseInt(process.env.SERVER_PORT);
+  const port = parseInt(process.env.SERVER_PORT || "");
   app.listen(port, () => {
     console.log(
       `Draftbit Coding Challenge is running at http://localhost:${port}/`
