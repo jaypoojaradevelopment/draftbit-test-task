@@ -1,0 +1,91 @@
+.Prism {
+  background: var(--primary);
+  padding: var(--spacing);
+  border-radius: var(--rounded);
+  text-align: center;
+  width: 100%;
+  overflow-x: auto;
+  font-size: var(--font-size-sm);
+}
+
+.Prism-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing);
+  padding:var(--spacing);
+  width: 100%;
+}
+
+.Prism-flex-vertical {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing);
+}
+
+.Prism-inner-box {
+  border: 4px solid var(--secondary);
+  flex-grow: 1;
+  padding: var(--spacing)
+}
+
+
+.Prism-display-text {
+  cursor: pointer;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Prism-display-text__default {
+  opacity: .5;
+}
+
+.Prism-display-text__changed > p{
+    border-bottom: 2px dashed var(--accent);
+}
+
+.Prism-display-text__focused {  
+  align-self: center;
+}
+
+.Prism-form{
+  max-width: 100%;
+  width: calc(var(--font-size-sm)*5);
+  min-height: calc(var(--font-size-sm) * 2);
+  padding: var(--spacing-sm);
+  border-radius: var(--rounded-md);
+  border: 2px solid var(--accent-2);
+  background: var(--secondary);
+  color: var(--white);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  font-size: inherit;
+}
+
+.Prism-form::after{
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-sm);
+  transform: translateY(-50%);
+  content: 'pt';
+  color: var(--white);
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+}
+
+.Prism-form input{
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  
+  position: absolute;
+  inset: 0;
+  right: var(--font-size-sm);
+  padding-inline: var(--spacing-sm);
+}

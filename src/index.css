@@ -1,8 +1,20 @@
 :root{
   --primary: #3d4b6c;
   --secondary: #28334d;
+  --accent: #daae66;
+  --accent-2: #359dd6;
   --white: white;
   --black: black;
+  --font-size-sm: 14px;
+  --font-size: 16px;
+  --rounded: 4px;
+  --rounded-md: 8px;
+  --spacing-sm: 4px;
+  --spacing: 8px;
+}
+
+*, *::after, *::before{
+  box-sizing: border-box;
 }
 
 body {
@@ -17,4 +29,15 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+p{
+  margin: 0;
+  padding: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
